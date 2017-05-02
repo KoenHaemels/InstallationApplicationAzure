@@ -1,3 +1,3 @@
 #!/bin/bash
-vhdname =$(<cat vhdname.txt)
-scalename= $(<cat scalename.txt)
+vhdname=`cat vhdname.txt`
+scalename=`cat scalename.txt`
