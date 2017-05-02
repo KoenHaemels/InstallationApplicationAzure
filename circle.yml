@@ -33,8 +33,9 @@ dependencies:
     # =======================
     # Installation / authentication AZURE
     # =======================
+    - sudo apt-get update && sudo apt-get install -y libssl-dev libffi-dev python-dev build-essential
     - sudo apt-get install curl -y
-    - curl -L https://aka.ms/InstallAzureCli | bash
+    - curl -L https://aka.ms/InstallAzureCli -q | bash
     - exec -l $SHELL
     - az login -u http://localhost --service-principal --tenant ${ACCOUNT_ID_AZURE} --password ${ACCOUNT_PASSWORD_AZURE} 
     # =======================
