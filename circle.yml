@@ -33,8 +33,10 @@ dependencies:
     # =======================
     # Installation / authentication AZURE
     # =======================
-
-
+    - sudo apt-get install curl -y
+    - curl -L https://aka.ms/InstallAzureCli | bash
+    - exec -l $SHELL
+    - az login -u http://localhost --service-principal --tenant ${ACCOUNT_ID_AZURE} --password ${ACCOUNT_PASSWORD_AZURE} 
     # =======================
     # Delete previous packer image
     # =======================
