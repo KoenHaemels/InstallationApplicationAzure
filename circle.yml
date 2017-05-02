@@ -43,8 +43,8 @@ dependencies:
     #- scalename="$(az vmss list -g autoscale1 | grep -m 1 "name" | sed -e 's/name//g' -e 's/"//g' -e 's/,//g' -e 's/://g' -e 's/     //g')"
     - az storage blob list --container-name system --account-name imagestoragecvo --account-key ${ACCOUNT_KEY_AZURE} | grep -m 1 "name" | /bin/sed -e 's/name//g' -e 's/"//g' -e 's/,//g' -e 's/://g' -e 's/     //g' > vhdname.txt
     - az vmss list -g autoscale1 | grep -m 1 "name" | sed -e 's/name//g' -e 's/"//g' -e 's/,//g' -e 's/://g' -e 's/     //g' > scalename.txt
-    - vhdname =$(cat vhdname.txt)
-    - scalename= $(cat scalename.txt)
+    - vhdname =$(<cat vhdname.txt)
+    - scalename= $(<cat scalename.txt)
     - echo $vhdname
     - echo $scalename
     # =======================
