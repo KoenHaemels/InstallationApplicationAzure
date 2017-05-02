@@ -41,8 +41,8 @@ dependencies:
     - az login -u http://localhost --service-principal --tenant ${ACCOUNT_ID_AZURE} --password ${ACCOUNT_PASSWORD_AZURE}
     - vhdname="$(az storage blob list --container-name system --account-name imagestoragecvo --account-key ${ACCOUNT_KEY_AZURE} | grep -m 1 "name" | /bin/sed -e 's/name//g' -e 's/"//g' -e 's/,//g' -e 's/://g' -e 's/     //g')"
     - scalename="$(az vmss list -g autoscale1 | grep -m 1 "name" | sed -e 's/name//g' -e 's/"//g' -e 's/,//g' -e 's/://g' -e 's/     //g')"
-    - echo ${vhdname}
-    - echo ${scalename}
+    - echo $vhdname
+    - echo $scalename
     # =======================
     # Delete previous packer image
     # =======================
