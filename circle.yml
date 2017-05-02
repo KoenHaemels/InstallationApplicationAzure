@@ -5,6 +5,8 @@ machine:
     PACKER_VERSION: 0.8.1
     BUILD: ${CIRCLE_BUILD_NUM}
     PREVIOUSBUILD: ${CIRCLE_PREVIOUS_BUILD_NUM}
+    VHDNAME: az storage blob list --container-name system --account-name imagestoragecvo --account-key ${ACCOUNT_KEY_AZURE} | grep -m 1 "name" | /bin/sed -e 's/name//g' -e 's/"//g' -e 's/,//g' -e 's/://g' -e 's/     //g'
+    SCALENAME: az vmss list -g autoscale1 | grep -m 1 "name" | sed -e 's/name//g' -e 's/"//g' -e 's/,//g' -e 's/://g' -e 's/     //g'
 general:
   branches:
     only:
@@ -41,12 +43,14 @@ dependencies:
     - az login -u http://localhost --service-principal --tenant ${ACCOUNT_ID_AZURE} --password ${ACCOUNT_PASSWORD_AZURE}
     #- vhdname="$(az storage blob list --container-name system --account-name imagestoragecvo --account-key ${ACCOUNT_KEY_AZURE} | grep -m 1 "name" | /bin/sed -e 's/name//g' -e 's/"//g' -e 's/,//g' -e 's/://g' -e 's/     //g')"
     #- scalename="$(az vmss list -g autoscale1 | grep -m 1 "name" | sed -e 's/name//g' -e 's/"//g' -e 's/,//g' -e 's/://g' -e 's/     //g')"
-    - az storage blob list --container-name system --account-name imagestoragecvo --account-key ${ACCOUNT_KEY_AZURE} | grep -m 1 "name" | /bin/sed -e 's/name//g' -e 's/"//g' -e 's/,//g' -e 's/://g' -e 's/     //g' > vhdname.txt
-    - az vmss list -g autoscale1 | grep -m 1 "name" | sed -e 's/name//g' -e 's/"//g' -e 's/,//g' -e 's/://g' -e 's/     //g' > scalename.txt
-    - sudo chmod +x toVariable.sh
-    - ./toVariable.sh
-    - echo $vhdname
-    - echo $scalename
+    #- az storage blob list --container-name system --account-name imagestoragecvo --account-key ${ACCOUNT_KEY_AZURE} | grep -m 1 "name" | /bin/sed -e 's/name//g' -e 's/"//g' -e 's/,//g' -e 's/://g' -e 's/     //g' > vhdname.txt
+    #- az vmss list -g autoscale1 | grep -m 1 "name" | sed -e 's/name//g' -e 's/"//g' -e 's/,//g' -e 's/://g' -e 's/     //g' > scalename.txt
+    #- sudo chmod +x toVariable.sh
+    #- ./toVariable.sh
+    - echo ${VHDNAME}
+    - echo ${SCALENAME}
+    - echo $VHDNAME
+    - echo $SCALENAME
     # =======================
     # Delete previous packer image
     # =======================
