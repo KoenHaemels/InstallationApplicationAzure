@@ -12,6 +12,7 @@
 
     "capture_container_name": "imagescvo",
     "capture_name_prefix": "packercvo",
+    "azure_tags: "1",
 
     "os_type": "Linux",
     "image_publisher": "Canonical",
