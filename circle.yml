@@ -33,10 +33,11 @@ dependencies:
     # =======================
     # Installation / authentication AZURE
     # =======================
-    - sudo apt-get update && sudo apt-get install -y libssl-dev libffi-dev python-dev build-essential -y
-    - sudo apt-get install curl -y
-    - curl -L https://aka.ms/InstallAzureCli -q | bash
-    - exec -l $SHELL
+    - sudo apt-get update && sudo apt-get install -y libssl-dev libffi-dev python-dev build-essential
+    - echo "deb [arch=amd64] https://packages.microsoft.com/repos/azure-cli/ wheezy main" | sudo tee /etc/apt/sources.list.d/azure-cli.list
+    - sudo apt-key adv --keyserver packages.microsoft.com --recv-keys 417A0893 -y
+    - sudo apt-get install apt-transport-https -y
+    - sudo apt-get update && sudo apt-get install azure-cli -y
     - az login -u http://localhost --service-principal --tenant ${ACCOUNT_ID_AZURE} --password ${ACCOUNT_PASSWORD_AZURE} 
     # =======================
     # Delete previous packer image
