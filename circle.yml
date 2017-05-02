@@ -5,7 +5,7 @@ machine:
     PACKER_VERSION: 0.8.1
     BUILD: ${CIRCLE_BUILD_NUM}
     PREVIOUSBUILD: ${CIRCLE_PREVIOUS_BUILD_NUM}
-    VHDNAME: $(echo vhdname.txt)
+    VHDNAME: $(cat vhdname.txt)
     SCALENAME: $(az vmss list -g autoscale1 | grep -m 1 "name" | sed -e 's/name//g' -e 's/"//g' -e 's/,//g' -e 's/://g' -e 's/     //g')
 general:
   branches:
