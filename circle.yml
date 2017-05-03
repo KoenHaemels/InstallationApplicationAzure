@@ -77,10 +77,10 @@ deployment:
       # =======================
       # Get full path image
       # =======================
-      - az storage blob list --container-name system --account-name imagestoragecvo --account-key ${ACCOUNT_KEY_AZURE} | grep -m 1 "name" | /bin/sed -e 's/name//g' -e 's/"//g' -e 's/,//g' -e 's/://g' -e 's/     //g' > vhdname.txt
-      - az vmss list -g autoscale1 | grep -m 1 "name" | sed -e 's/name//g' -e 's/"//g' -e 's/,//g' -e 's/://g' -e 's/     //g' > scalename.txt
-      - az vmss update -g autoscale1 -n $(cat scalename.txt) --set virtualMachineProfile.storageProfile.osDisk.image.uri=$(cat vhdname.txt)
-      - az vmss reimage -n $(cat scalename.txt) -g autoscale1
+      - az storage blob list --container-name system --account-name imagestoragecvo --account-key ${ACCOUNT_KEY_AZURE} | grep -m 1 "name" | /bin/sed -e 's/name//g' -e 's/"//g' -e 's/,//g' -e 's/://g' -e 's|     |https://imagestoragecvo.blob.core.windows.net/system/|g' > vhdname.txt
+      - az vmss list -g cvoautoscale | grep -m 1 "name" | sed -e 's/name//g' -e 's/"//g' -e 's/,//g' -e 's/://g' -e 's/     //g' > scalename.txt
+      - az vmss update -g cvoautoscale -n $(cat scalename.txt) --set virtualMachineProfile.storageProfile.osDisk.image.uri=$(cat vhdname.txt)
+      - az vmss reimage -n $(cat scalename.txt) -g cvoautoscale
       # Create new instance
       # =======================
       #- sudo /opt/google-cloud-sdk/bin/gcloud deployment-manager deployments create instance-"${BUILD}" --config template.yml
