@@ -3,8 +3,6 @@ machine:
   timezone: Europe/Brussels
   environment:
     PACKER_VERSION: 0.8.1
-    BUILD: ${CIRCLE_BUILD_NUM}
-    PREVIOUSBUILD: ${CIRCLE_PREVIOUS_BUILD_NUM}
 general:
   branches:
     only:
@@ -39,13 +37,6 @@ dependencies:
     - sudo apt-get install apt-transport-https -y
     - sudo apt-get update && sudo apt-get install azure-cli -y
     - az login -u http://localhost --service-principal --tenant ${ACCOUNT_ID_AZURE} --password ${ACCOUNT_PASSWORD_AZURE}
-    # =======================
-    # Delete previous packer image
-    # =======================
-    # - sudo /opt/google-cloud-sdk/bin/gcloud compute images delete packer-image-stage -q
-    # - sudo /opt/google-cloud-sdk/bin/gcloud compute images delete packer-image-stage-"${PREVIOUSBUILD}" -q
-    # =======================
-
 test:
   override:
     # =======================
@@ -87,8 +78,7 @@ deployment:
       # Get full path image
       # =======================
       - az storage blob list --container-name system --account-name imagestoragecvo --account-key ${ACCOUNT_KEY_AZURE} | grep -m 1 "name" | /bin/sed -e 's/name//g' -e 's/"//g' -e 's/,//g' -e 's/://g' -e 's|     |https://imagestoragecvo.blob.core.windows.net/system/|g' > vhdname.txt
-      - az vmss list -g cvoautoscale | grep -m 1 "name" | sed -e 's/name//g' -e 's/"//g' -e 's/,//g' -e 's/://g' -e 's/     //g' > scalename.txt
-      #- /bin/sed '1d' vhdname.txt > tmpfile; sudo mv tmpfile vhdname.txt
-      - az vmss update -g cvoautoscale -n $(cat scalename.txt) --set virtualMachineProfile.storageProfile.osDisk.image.uri=$(cat vhdname.txt)
-      - az vmss reimage -n $(cat scalename.txt) -g cvoautoscale --instance-id 0
-      - az vmss reimage -n $(cat scalename.txt) -g cvoautoscale --instance-id 1
+      - az vmss list -g cvoautoscale1 | grep -m 1 "name" | sed -e 's/name//g' -e 's/"//g' -e 's/,//g' -e 's/://g' -e 's/     //g' > scalename.txt
+      - az vmss update -g cvoautoscale1 -n $(cat scalename.txt) --set virtualMachineProfile.storageProfile.osDisk.image.uri=$(cat vhdname.txt)
+      - az vmss reimage -n $(cat scalename.txt) -g cvoautoscale1 --instance-id 0
+      - az vmss reimage -n $(cat scalename.txt) -g cvoautoscale1 --instance-id 1
