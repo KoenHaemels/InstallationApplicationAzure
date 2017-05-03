@@ -76,6 +76,9 @@ deployment:
       - az storage blob list --container-name system --account-name imagestoragecvo --account-key ${ACCOUNT_KEY_AZURE} | grep -m 1 "name" | /bin/sed -e 's/name//g' -e 's/"//g' -e 's/,//g' -e 's/://g' -e 's/     //g' > vhdname2.txt
       - cat vhdname2.txt
       - az storage blob delete -c system -n $(cat vhdname2.txt) --account-name imagestoragecvo --account-key ${ACCOUNT_KEY_AZURE}
+      - az storage blob list --container-name system --account-name imagestoragecvo --account-key ${ACCOUNT_KEY_AZURE} | grep -m 1 "name" | /bin/sed -e 's/name//g' -e 's/"//g' -e 's/,//g' -e 's/://g' -e 's/     //g' > jsonname.txt
+      - cat jsonname.txt
+      - az storage blob delete -c system -n $(cat jsonname.txt) --account-name imagestoragecvo --account-key ${ACCOUNT_KEY_AZURE}
       # =======================
       # Build new image
       # =======================
@@ -89,14 +92,3 @@ deployment:
       - az vmss update -g cvoautoscale -n $(cat scalename.txt) --set virtualMachineProfile.storageProfile.osDisk.image.uri=$(cat vhdname.txt)
       - az vmss reimage -n $(cat scalename.txt) -g cvoautoscale --instance-id 0
       - az vmss reimage -n $(cat scalename.txt) -g cvoautoscale --instance-id 1
-      # Create new instance
-      # =======================
-      #- sudo /opt/google-cloud-sdk/bin/gcloud deployment-manager deployments create instance-"${BUILD}" --config template.yml
-      # =======================
-      # Rolling update
-      # =======================
-      #- sudo /opt/google-cloud-sdk/bin/gcloud alpha compute instance-groups managed rolling-action start-update test-instance-groupmanager --version template=template-file-"${BUILD}" --min-ready 1m --max-unavailable 1 --zone europe-west1-b -q
-      # =======================
-      # Delete Previous instance
-      # =======================
-      #- sudo /opt/google-cloud-sdk/bin/gcloud deployment-manager deployments delete instance-"${PREVIOUSBUILD}" -q
