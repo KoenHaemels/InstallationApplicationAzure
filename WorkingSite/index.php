@@ -32,6 +32,22 @@
 </label>
     <input type="submit" value="Upload Image" name="submit">
 </form>
+<div class="well">
+	<h2><u>Files bucket:</u></h2>
+<?php
+ if ($handle = opendir('/var/InstallationApplicationAzure/bucket')) {
+   while (false !== ($file = readdir($handle)))
+      {
+          if ($file != "." && $file != "..")
+          {
+                $thelist .= '<p>'.$file.'</p>';
+          }
+       }
+  closedir($handle);
+  }       
+?>
+<P>List of files:</p>
+<P><?=$thelist?></p>
 </div>
     </body>
 </html>
