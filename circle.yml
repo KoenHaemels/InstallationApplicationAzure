@@ -3,7 +3,7 @@ machine:
   timezone: Europe/Brussels
   environment:
     PACKER_VERSION: 0.8.1
-    RESOURCEGROUP: "autoscale1"
+    RESOURCEGROUP: "azuretest"
 general:
   branches:
     only:
